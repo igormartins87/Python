@@ -20,6 +20,21 @@ items = {
 #Create
 @app.post("/items/",status_code=status.HTTP_201_CREATED)
 def create_item(item: Item):
+    proximo_id = max(item.keys(), default=0) + 1
+    item[proximo_id] = item
+    return{
+        "message" : "Item adicionado com sucesso!",
+        "id": proximo_id,
+        **item.dict()
+    }
+
+#Read
+@app.get("/items/{item_id}", response_model=Item)
+def read_item(item_id: int):
+    if item_id not in items:
+        raise HTTPException(status_code=404, detail=" Item não encontrado")
+    return items [item_id]
+
 
 
 @app.delete("/item/{item_id}")
