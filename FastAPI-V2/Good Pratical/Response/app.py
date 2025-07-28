@@ -5,7 +5,22 @@ from typing import Optional
 
 app = FastAPI()
 
-items = { 1: "Item 1" , 2: "Item 2" , 3:"Item 3"}
+class Item(BaseModel):
+    nome:str
+    descricao: Optional[str] =None
+    preco: float
+    oferta: Optional[bool] = False
+
+items = {
+    1: Item(nome="mouse", descricao= "mouse ergonomico" ,preco=50.20 ,oferta=False),
+    2: Item(nome="cadeira", descricao= "cadeira game" ,preco=700.00 ,oferta=True),
+    3: Item(nome="monitor", descricao= "monitor Game" ,preco=500.00 ,oferta=False),
+}
+
+#Create
+@app.post("/items/",status_code=status.HTTP_201_CREATED)
+def create_item(item: Item):
+
 
 @app.delete("/item/{item_id}")
 def delete_item(item_id :int):
