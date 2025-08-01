@@ -35,12 +35,25 @@ def read_item(item_id: int):
         raise HTTPException(status_code=404, detail=" Item não encontrado")
     return items [item_id]
 
+#readALL
+@app.get("/items/", response_model=dict[int,Item])
+def list_item():
+    return items
+
+#Update
+@app.put("/items/{item_id}", response_model=Item)
+def update_item(item_id: int , item: Item):
+    if item_id not in items:
+        raise HTTPException(status_code=404, detail=" Item não encontrado")
+    items [item_id] = item
+    return item
 
 
-@app.delete("/item/{item_id}")
-def delete_item(item_id :int):
+@app.delete("/item/{item_id}", status_code=status.HTTP_204_NO_CONTENT)
+def delete_item(item_id: int):
     if item_id in items:
-        del items[item_id]
-        return JSONResponse(status_code=status.HTTP_204_NO_CONTENT)
-    else:
         raise HTTPException(status_code=404 ,detail="Item não encontado")
+    del items[item_id]
+    return JSONResponse(status_code=status.HTTP_204_NO_CONTENT)
+
+
