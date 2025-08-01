@@ -21,7 +21,7 @@ items = {
 @app.post("/items/",status_code=status.HTTP_201_CREATED)
 def create_item(item: Item):
     proximo_id = max(item.keys(), default=0) + 1
-    item[proximo_id] = item
+    items[proximo_id] = item
     return{
         "message" : "Item adicionado com sucesso!",
         "id": proximo_id,
